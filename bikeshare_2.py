@@ -48,7 +48,7 @@ def load_data(city, month, day):
     Returns:
         df - Pandas DataFrame containing city data filtered by month and day
     """
-    df = pd.read_csv("data/{}.csv".format(city.replace(" ","_")))
+    df = pd.read_csv("{}.csv".format(city.replace(" ","_")))
 
     # Convert the Start and End Time columns to datetime
     df['Start Time'] = pd.to_datetime(df['Start Time'])
@@ -182,6 +182,29 @@ def user_stats(df, city):
     print('-'*40)
 
 
+def display_data(df):
+    """
+    Display contents of the CSV file to the display as requested by
+    the user.
+    """
+
+    start_loc = 0
+    end_loc = 5
+
+    display_active = input("Do you want to see the raw data?: ").lower()
+
+    if display_active == 'yes':
+        while end_loc <= df.shape[0] - 1:
+
+            print(df.iloc[start_loc:end_loc,:])
+            start_loc += 5
+            end_loc += 5
+
+            end_display = input("Do you wish to continue?: ").lower()
+            if end_display == 'no':
+                break
+
+
 def main():
 
     while True:
@@ -192,6 +215,7 @@ def main():
         station_stats(df)
         trip_duration_stats(df)
         user_stats(df, city)
+        display_data(df)
 
         restart = input('\nWould you like to restart? Enter yes or no.\n')
         if restart.lower() != 'yes':
